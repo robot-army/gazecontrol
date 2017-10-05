@@ -42,6 +42,7 @@ void loop() {
 //for(distance=1000; distance > 50; distance=distance-100){
 //  for(angle=0;angle<360;angle=angle+10){
 while (Serial.available()){
+  delay(30);
   inputstring = Serial.readStringUntil('A');
   refresh = 1;
 }
