@@ -28,7 +28,7 @@ class Serial():
 
     def write(self, data):
         if self.ser.is_open:
-            self.ser.write(data + '\r\n')
+            self.ser.write(data)
 
     def close(self):
         self.ser.close()
