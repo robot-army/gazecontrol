@@ -88,7 +88,7 @@ class VideoProcessing():
                         angle = numpy.arctan2((gazey-cYroi),(gazex-cXroi))*180/numpy.pi
                         if angle<0:
                             angle = angle + 360
-                        serialout = (str(int(distance)).zfill(4)+str(int(angle)).zfill(4))
+                        serialout = (str(int(distance)).zfill(4)+str(int(angle)).zfill(4))+'A'
                         logging.info('Marker ' +str(id) + ' centre ' + str(cXroi) + ',' + str(cYroi) + "distance " + str(distance) + "Angle: " + str(angle) + "Serialout: " + serialout)
                     if cv2.pointPolygonTest(roi, (gazex, gazey), False) >= 0:
                         threshold = config.GAZE_THRESHOLD
