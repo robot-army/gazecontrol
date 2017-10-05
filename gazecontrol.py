@@ -103,7 +103,9 @@ if __name__=='__main__':
         # write hits to serial port
         if serialangledist is not None and output_port is not None:
             serialport.write(serialangledist)
-            logging.info('Serialangledist: '+serialangledist)
+            logging.debug('Serialangledist: '+serialangledist)
+        if id is not None:
+            logging.info('banging out the port: '+str(id))
 
 
 

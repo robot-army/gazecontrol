@@ -1,6 +1,8 @@
 #include <Adafruit_NeoPixel.h>
 #include <string.h>
 
+// CHANGE this number for each fiducial
+#define FIDUCIAL_ID 3
 
 #define PIN 6
 #define NUMPIXELS 28
@@ -31,26 +33,33 @@ void loop() {
   int angle = 0;
   int distance = 1000;
   int centreled;
+  String marker_id;
   float dist;
   String  inputstring;
   String dist_string;
   String angle_string;
-  int refresh=0;
+  int refresh=1;
 
 //these for loops are for testing only, they'll be replaced with a Serial.read() when connected to the other thing
 //
 //for(distance=1000; distance > 50; distance=distance-100){
 //  for(angle=0;angle<360;angle=angle+10){
+
+do {
+  
 while (Serial.available()){
-  delay(30);
   inputstring = Serial.readStringUntil('A');
-  refresh = 1;
+//  refresh = 1;
 }
-    dist_string = inputstring.substring(0,4);
-    angle_string = inputstring.substring(4,8);
+
+
+    marker_id = inputstring.substring(0,2);
+    dist_string = inputstring.substring(2,6);
+    angle_string = inputstring.substring(6,10);
     angle = angle_string.toInt();
     distance = dist_string.toInt();
 
+} while(marker_id.toInt() != FIDUCIAL_ID);
     
 if(distance==0){
   distance = 1000;
@@ -101,9 +110,15 @@ if(distance==0){
       pixels.setPixelColor(i,0,c[index],c[index]);    
     }
 
+    if(angle==9999){
+      for(int i=0; i<NUMPIXELS; i++) {
+        pixels.setPixelColor(i,0,255,0);
+      }
+    }
+
   if(refresh == 1){
           pixels.show(); // This sends the updated pixel color to the hardware.
-      refresh = 0;
+//      refresh = 0;
   }
     
   }

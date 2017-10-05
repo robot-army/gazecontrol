@@ -88,9 +88,10 @@ class VideoProcessing():
                         angle = numpy.arctan2((gazey-cYroi),(gazex-cXroi))*180/numpy.pi
                         if angle<0:
                             angle = angle + 360
-                        serialout = (str(int(distance)).zfill(4)+str(int(angle)).zfill(4))+'A'
-                        logging.info('Marker ' +str(id) + ' centre ' + str(cXroi) + ',' + str(cYroi) + "distance " + str(distance) + "Angle: " + str(angle) + "Serialout: " + serialout)
+                        serialout = (str(int(id)).zfill(2)+str(int(distance)).zfill(4)+str(int(angle)).zfill(4))+'A'
+                        logging.debug('Marker ' +str(id) + ' centre ' + str(cXroi) + ',' + str(cYroi) + "distance " + str(distance) + "Angle: " + str(angle) + "Serialout: " + serialout)
                     if cv2.pointPolygonTest(roi, (gazex, gazey), False) >= 0:
+                        serialout = (str(int(id)).zfill(2)+str(int(distance)).zfill(4)+'9999A')
                         threshold = config.GAZE_THRESHOLD
                         if not config.HEADLESS:
                             threshold = cv2.getTrackbarPos('Threshold', self.param_window)
