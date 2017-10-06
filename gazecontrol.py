@@ -23,6 +23,7 @@ import logging
 import com_utils
 import config
 import time
+import led_control
 
 serial_available = True
 try:
@@ -63,6 +64,7 @@ if __name__=='__main__':
 
     if output_port is not None and serial_available:
         serialport = com_utils.Serial(output_port)
+        led_params = led_control.LedControl()
 
     peer = (config.DATA_STREAM_IP, config.DATA_STREAM_PORT)
     buffersync = tobii_api.BufferSync()
@@ -81,6 +83,8 @@ if __name__=='__main__':
     newframetime = 0
     lastframetime = 0
     framestocount = 20
+    start = time.time()
+    
     while(running):
         et.read()
 
@@ -91,7 +95,7 @@ if __name__=='__main__':
 
         if framecounter % framestocount == 0:
             newframetime = time.time() 
-            logging.info('FPS: ' + str(framestocount/(newframetime-lastframetime)))
+            #logging.info('FPS: ' + str(framestocount/(newframetime-lastframetime)))
             lastframetime = time.time()
         # read data from stream
         data = buffersync.sync()
@@ -99,25 +103,24 @@ if __name__=='__main__':
             lastdata = data
 
         # detect fiducials
-        id, serialangledist = video.detect(frame, lastdata)
-        # write hits to serial port
-        if serialangledist is not None and output_port is not None:
-            serialport.write(serialangledist)
-            logging.debug('Serialangledist: '+serialangledist)
-        if id is not None:
-            logging.info('banging out the port: '+str(id))
-
-
+        detection_params = video.detect(frame, lastdata)
+        if output_port is not None:
+            if (time.time() - start) > 0.033:
+                led_string = led_params.get_led_params(detection_params)
+                start = time.time()
+                serialport.write(led_string)
 
         status = calibration.update()
         if status == 'failed':
             logging.warn('WARNING: Calibration failed, using default calibration instead')
             if output_port is not None:
-                serialport.write('F')
+                #serialport.write('F')
+                pass
         elif status == 'calibrated':
             logging.info('Calibration successful')
             if output_port is not None:
-                serialport.write('S')
+                #serialport.write('S')
+                pass
 
         if not config.HEADLESS:
             key = cv2.waitKey(1)
