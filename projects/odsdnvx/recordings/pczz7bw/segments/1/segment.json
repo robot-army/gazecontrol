@@ -1,0 +1,12 @@
+{
+    "seg_id": 1,
+    "seg_length": 81,
+    "seg_length_us": 81705314,
+    "seg_calibrating": true,
+    "seg_calibrated": true,
+    "seg_t_start": "2017-10-08T11:44:21+0000",
+    "seg_t_stop": "2017-10-08T11:45:42+0000",
+    "seg_created": "2017-10-08T11:44:21+0000",
+    "seg_end_reason": "api",
+    "seg_eyesstream": false
+}
